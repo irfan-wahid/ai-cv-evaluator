@@ -41,15 +41,50 @@ Project ini menggunakan Layered Architecture dengan membagi logic menjadi bebera
 Terdapat beberapa endpoint pada project ini diantaranya:
 ### Job Vacancy
 *   **POST /job-vacancy**: Membuat lowongan pekerjaan.
-Request Body (JSON):
-```json
-{
-  "title": "Golang Backend Developer",
-  "description": "Proficient knowledge in Golang - minimum 2-4 year, Minimum education S1, Can work in Banking Company, Can work fulltime onsite in Jakarta, Can stay at Jabodetabek area, Experience in microservices project, and can make service in Restful API, Experience in using RDBMS such as MySQL or MS SQL, Experience in Redis or ElasticSearch, Experience in using Kafka or RabbitMQ, Experience is implementing clean code architecture, Experience in Git, Familiar with linux, Understand waterfall or agile SDLC concepts",
-  "studyCaseBrief": "test",
-  "scoringRubric": {
-    "cv": ["match_rate", "technical_skills", "experience_level", "achievements", "cultural_fit"],
-    "project": ["correctness", "code_quality", "resilience", "documentation", "creativity"]
-  }
-}
+Curl:
+```bash
+curl -X POST http://localhost:3000/job-vacancy \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Golang Backend Developer",
+    "description": "Proficient knowledge in Golang - minimum 2-4 year, Minimum education S1, Can work in Banking Company, Can work fulltime onsite in Jakarta, Can stay at Jabodetabek area, Experience in microservices project, and can make service in Restful API, Experience in using RDBMS such as MySQL or MS SQL, Experience in Redis or ElasticSearch, Experience in using Kafka or RabbitMQ, Experience is implementing clean code architecture, Experience in Git, Familiar with linux, Understand waterfall or agile SDLC concepts",
+    "studyCaseBrief": "test",
+    "scoringRubric": {
+      "cv": ["match_rate", "technical_skills", "experience_level", "achievements", "cultural_fit"],
+      "project": ["correctness", "code_quality", "resilience", "documentation", "creativity"]
+    }
+  }'
+```
+
+### Job Application
+*   **POST /job-application/:{jobVacancyId}**: Membuat lamaran pekerjaan.
+
+Request (multipart/form-data):
+
+| Field    | Type | Required | Description                        |
+|----------|------|----------|------------------------------------|
+| cv       | file | ✅       | File CV kandidat (PDF)             |
+| project  | file | ✅       | File project kandidat (PDF/ZIP)    |
+
+Curl:
+```bash
+curl -X POST http://localhost:3000/job-application/1 \
+  -F "cv=@/path/to/cv.pdf" \
+  -F "project=@/path/to/project.zip"
+```
+
+*   **POST /job-application/evaluate**: Menjalankan evaluasi CV.
+Curl:
+```bash
+curl -X POST http://localhost:3000/job-application/evaluate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "12345"
+  }'
+```
+
+*   **GET /job-application/result/:{id}**: Melakukan pengecekan dari proses evaluasi CV.
+Curl:
+```bash
+curl -X GET http://localhost:3000/job-application/result/:{id}
 ```
