@@ -5,6 +5,10 @@ class JobVacancyController {
         try{
             const body = req.body
 
+            if (!body.title || !body.description || !body.studyCaseBrief || !body.scoring_rubric) {
+                return res.status(400).json({ message: "title, description, studyCaseBrief, scoring_rubric is required" });
+            }
+
             const jobVacancy = await jobVacancyService.create(body);
 
             res.status(200).json({

@@ -70,7 +70,7 @@ Curl:
 ```bash
 curl -X POST http://localhost:3000/job-application/1 \
   -F "cv=@/path/to/cv.pdf" \
-  -F "project=@/path/to/project.zip"
+  -F "project=@/path/to/project.pdf"
 ```
 
 *   **POST /job-application/evaluate**: Menjalankan evaluasi CV.

@@ -13,7 +13,7 @@ const connection = new Redis({
 const worker = new Worker(
   "evaluation",
   async (job) => {
-    console.log(`⚡ Processing job: ${job.name}`, job.data);
+    console.log(`Processing job: ${job.name}`, job.data);
 
     if (job.name === "evaluate") {
       const {
@@ -44,13 +44,15 @@ const worker = new Worker(
           rubricScore: result.rubricScore,
         });
 
-        console.log(`✅ Job ${applicationId} selesai dievaluasi`);
+        console.log(`Job ${applicationId} selesai dievaluasi`);
       } catch (err) {
-        console.error(`❌ Gagal memproses job ${applicationId}`, err);
+        console.error(`Gagal memproses job ${applicationId}`, err);
 
         await jobApplicationRepository.update(applicationId, {
           status: 'FAILED'
         });
+
+        throw err;
       }
     }
   },
