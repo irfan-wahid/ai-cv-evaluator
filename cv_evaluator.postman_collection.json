@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "4ce2ce56-f6c7-4be0-85ba-a14700967b70",
+		"name": "CV Evaluator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32269868"
+	},
+	"item": [
+		{
+			"name": "Create Job Vacancy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"Golang Backend Developer\",\r\n    \"description\" : \"Proficient knowledge in Golang - minimum 2-4 year, Minimum education S1, Can work in Banking Company, Can work fulltime onsite in Jakarta, Can stay at Jabodetabek area, Experience in microservices project, and can make service in Restful API, Experience in using RDBMS such as MySQL or MS SQL, Experience in Redis or ElasticSearch, Experience in using Kafka or RabbitMQ, Experience is implementing clean code architecture, Experience in Git, Familiar with linux, Understand waterfall or agile SDLC concepts\",\r\n    \"studyCaseBrief\" : \"Objective: Build a backend service that accepts a candidate’s CV and project report, compares them with a job vacancy description and the study case brief, and returns a structured evaluation report. The report should include: Match rate between CV and job requirements. Scoring of project deliverables against standardized parameters. The goal is to demonstrate backend engineering combined with AI workflows such as prompt design, LLM chaining, retrieval, and resilience. Deliverables: 1. Backend Service (API endpoints): Upload CV and Project Report (plain text, PDF, or docx). Run evaluation pipeline and return a JSON response with job id and status (queued). Retrieve evaluation result with multiple stages: queued, processing, completed. When completed, return evaluation results including cv_match_rate, cv_feedback, project_score, project_feedback, and overall_summary. 2. Evaluation Pipeline: The pipeline should use AI-driven steps: a. Prompt Design and LLM Chaining: Step 1: Extract structured information from the CV (skills, experiences, projects). Step 2: Compare extracted data with the job vacancy description. Step 3: Score the match rate and generate CV feedback. Step 4: Evaluate project report based on a scoring rubric, then refine via a second LLM call. b. RAG (Context Retrieval): Store job descriptions and scoring rubrics in a vector database. Retrieve relevant sections and inject into prompts (for CV scoring vs project scoring). c. Long-Running Process Handling: The process should not block until AI finishes. Store the task, return a job ID, and allow retrieval of results later. d. Error Handling and Randomness Control: Simulate failures from LLM API such as timeouts and rate limits. Implement retries and back-off strategies. Control LLM temperature or add a validation layer to keep responses stable. 3. Standardized Evaluation Parameters: Define scoring parameters for CV evaluation and project evaluation. CV Evaluation (Match Rate): Technical Skills Match (backend, databases, APIs, cloud, AI/LLM exposure). Experience Level (years, project complexity). Relevant Achievements (impact, scale). Cultural Fit (communication, learning attitude). Project Deliverable Evaluation: Correctness (meets requirements such as prompt design, chaining, RAG, error handling). Code Quality (clean, modular, testable). Resilience (handles failures and retries). Documentation (clear README, explanation of trade-offs). Creativity or Bonus (optional improvements such as authentication, deployment, dashboards). Each parameter should be scored on a scale from 1 to 5, then aggregated into a final score. Requirements: Use any backend framework (Rails, Django, Node.js, etc.). Use an LLM (OpenAI, Gemini, or OpenRouter). If unavailable, mock the responses. Use a simple vector database. Provide a README with run instructions and explanation of design choices.\",\r\n    \"scoringRubric\": {\r\n        \"cv\": [\"match_rate\", \"technical_skills\", \"experience_level\", \"achievements\", \"cultural_fit\"],\r\n        \"project\": [\"correctness\", \"code_quality\", \"resilience\", \"documentation\", \"creativity\"]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/job-vacancy",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"job-vacancy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job Application",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "cv",
+							"type": "file",
+							"src": "J-l9gFmv1/CV_Muhammad Irfan Noor Wahid.pdf"
+						},
+						{
+							"key": "project",
+							"type": "file",
+							"src": "_UyXMhh9E/Rakamin Documentation.pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/job-application/214b7916-abdb-4238-b333-dcba75a56cc6",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"job-application",
+						"214b7916-abdb-4238-b333-dcba75a56cc6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Run Evaluate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\" : \"6f7826d1-d09b-4998-8cb5-a76652dd24be\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/job-application/evaluate",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"job-application",
+						"evaluate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Result",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"jobVacancyId\" : \"a4ae8f93-34c6-49cb-ae27-af0a8a34d4f2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/job-application/result/6f7826d1-d09b-4998-8cb5-a76652dd24be",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"job-application",
+						"result",
+						"6f7826d1-d09b-4998-8cb5-a76652dd24be"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -88,3 +88,6 @@ Curl:
 ```bash
 curl -X GET http://localhost:3000/job-application/result/:{id}
 ```
+
+### Postman Collection
+Atau jika anda ingin menjalankan endpoint di Postman, anda bisa import file cv_evaluator.postman_collection.json
